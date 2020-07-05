@@ -3,6 +3,7 @@ package ru.netology.manager;
 import ru.netology.domain.Poster;
 
 public class PosterManager {
+
     private Poster[] items = new Poster[0];
     private int standardPosterLength = 10;
     private int newPosterLength;
