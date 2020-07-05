@@ -1,30 +1,31 @@
 package ru.netology.manager;
 
 import ru.netology.domain.Poster;
+import ru.netology.repository.PosterRepository;
 
 public class PosterManager {
 
-    private Poster[] items = new Poster[0];
+    private PosterRepository repository;
     private int standardPosterLength = 10;
     private int newPosterLength;
 
     public PosterManager(int i) {
     }
 
-    public PosterManager() {
+    public PosterManager(PosterRepository repository) {
+        this.repository = repository;
+    }
+
+    public PosterManager(PosterRepository repository, int i) {
 
     }
 
     public void addPoster(Poster item) {
-        int length = items.length + 1;
-        Poster[] tmp = new Poster[length];
-        System.arraycopy(items, 0, tmp, 0, items.length);
-        int lastIndex = tmp.length - 1;
-        tmp[lastIndex] = item;
-        items = tmp;
+        repository.save(item);
     }
 
     public Poster[] getAll() {
+        Poster[] items = repository.findAll();
         int length = items.length;
         if(newPosterLength <=0) {
             if(standardPosterLength < length) {
@@ -35,7 +36,6 @@ public class PosterManager {
                 length = newPosterLength;
             }
         }
-
         Poster[] result = new Poster[items.length];
         for (int i = 0; i < result.length; i++) {
             int index = items.length - i - 1;

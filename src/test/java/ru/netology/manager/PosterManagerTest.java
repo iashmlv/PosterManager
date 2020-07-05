@@ -2,13 +2,24 @@ package ru.netology.manager;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import ru.netology.domain.Poster;
+import ru.netology.repository.PosterRepository;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class PosterManagerTest {
-    PosterManager manager;
-    PosterManager managerNew;
+    @Mock
+    PosterRepository repository;
+    @InjectMocks
+    PosterManager manager = new PosterManager(repository);
+    PosterManager managerNew = new PosterManager(repository, 5);
 
     private Poster first = new Poster(1, "Dirty Harry", "cop movie");
     private Poster second = new Poster(2, "Unforgiven", "western");
@@ -24,72 +35,86 @@ class PosterManagerTest {
 
     @BeforeEach
     void setUp() {
-        manager = new PosterManager();
-        manager.addPoster(first);
-        manager.addPoster(second);
-        manager.addPoster(third);
-        manager.addPoster(fourth);
-        manager.addPoster(fifth);
-        manager.addPoster(sixth);
-        manager.addPoster(seventh);
-        manager.addPoster(eighth);
-        manager.addPoster(ninth);
+    }
 
-        managerNew = new PosterManager(5);
-        managerNew.addPoster(first);
-        managerNew.addPoster(second);
-        managerNew.addPoster(third);
-        managerNew.addPoster(fourth);
-        managerNew.addPoster(fifth);
+    @Test
+    void addPoster() {
+        Poster twelwth = new Poster(12, "Rashomon", "drama");
+        manager.addPoster(twelwth);
+        repository.save(twelwth);
+        PosterManager manager = new PosterManager(repository, 5);
+        Poster[] returned = new Poster[] {first, second, third, fourth,fifth, twelwth};
+        doReturn(returned).when(repository).findAll();
+        Poster[] actual = manager.getAll();
+        Poster[] expected = new Poster[] {twelwth, fifth, fourth, third, second};
+        assertArrayEquals(expected, actual);
+        Mockito.verify(repository, times(1)).findAll();
     }
 
     @Test
     void shouldReturnLastTenPoster() {
-        manager.addPoster(tenth);
+        Poster[] returned = new Poster[]{first, second, third, fourth, fifth, sixth, seventh, eighth, ninth, tenth};
+        doReturn(returned).when(repository).findAll();
         Poster[] actual = manager.getAll();
         Poster[] expected = new Poster[]{tenth, ninth, eighth, seventh, sixth, fifth, fourth, third, second, first};
         assertArrayEquals(expected, actual);
+        verify(repository, times(1)).findAll();
     }
 
     @Test
     void shouldReturnAllPosters() {
+        Poster[] returned = new Poster[]{first, second, third, fourth, fifth, sixth, seventh, eighth, ninth};
+        doReturn(returned).when(repository).findAll();
         Poster[] actual = manager.getAll();
-        Poster[] expected = new Poster[] {ninth, eighth, seventh, sixth, fifth, fourth, third, second, first};
+        Poster[] expected = new Poster[]{ninth, eighth, seventh, sixth, fifth, fourth, third, second, first};
         assertArrayEquals(expected, actual);
+        verify(repository, times(1)).findAll();
     }
 
     @Test
     void shouldReturnFiveLastInNewManager() {
-        Poster[] actual = managerNew.getAll();
-        Poster[] expected = new Poster[] {fifth, fourth, third, second, first};
-        assertArrayEquals(expected, actual);
+        PosterManager manager = new PosterManager(repository,5);
+        Poster[] returned = new Poster[]{first, second, third, fourth, fifth};
+        doReturn(returned).when(repository).findAll();
+        Poster[] actual = manager.getAll();
+        Poster[] expected = new Poster[]{fifth, fourth, third, second, first};
+        assertArrayEquals(actual, expected);
+        verify(repository, times(1)).findAll();
     }
 
     @Test
     void shouldReturnLastFiveWhenZero() {
-        manager = new PosterManager(0);
-        Poster[] actual = managerNew.getAll();
-        Poster[] expected = new Poster[] {fifth, fourth, third, second, first};
+        PosterManager manager = new PosterManager(repository,0);
+        Poster[] returned = new Poster[]{first, second, third, fourth, fifth};
+        doReturn(returned).when(repository).findAll();
+        Poster[] actual = manager.getAll();
+        Poster[] expected = new Poster[]{fifth, fourth, third, second, first};
         assertArrayEquals(actual, expected);
+        verify(repository, times(1)).findAll();
     }
 
     @Test
     void shouldReturnLastFiveWhenLessThanZero() {
-        manager = new PosterManager(-1);
-        Poster[] actual = managerNew.getAll();
-        Poster[] expected = new Poster[] {fifth, fourth, third, second, first};
+        PosterManager manager = new PosterManager(repository,-1);
+        Poster[] returned = new Poster[]{first, second, third, fourth, fifth};
+        doReturn(returned).when(repository).findAll();
+        Poster[] actual = manager.getAll();
+        Poster[] expected = new Poster[]{fifth, fourth, third, second, first};
         assertArrayEquals(actual, expected);
+        verify(repository, times(1)).findAll();
     }
 
     @Test
     void shouldReturnLastFiveWhenMore() {
-        manager = new PosterManager(1000);
-        Poster[] actual = managerNew.getAll();
-        Poster[] expected = new Poster[] {fifth, fourth, third, second, first};
+        PosterManager manager = new PosterManager(repository,1000);
+        Poster[] returned = new Poster[]{first, second, third, fourth, fifth};
+        doReturn(returned).when(repository).findAll();
+        Poster[] actual = manager.getAll();
+        Poster[] expected = new Poster[]{fifth, fourth, third, second, first};
         assertArrayEquals(actual, expected);
+        verify(repository, times(1)).findAll();
+
     }
-
-
 
 
 }
