@@ -44,12 +44,28 @@ class PosterManagerTest {
     }
 
     @Test
-    void shouldReturnLastTen() {
+    void shouldReturnLastTenPoster() {
         manager.addPoster(tenth);
         Poster[] actual = manager.getAll();
         Poster[] expected = new Poster[]{tenth, ninth, eighth, seventh, sixth, fifth, fourth, third, second, first};
         assertArrayEquals(expected, actual);
     }
+
+    @Test
+    void shouldReturnAllPosters() {
+        Poster[] actual = manager.getAll();
+        Poster[] expected = new Poster[] {ninth, eighth, seventh, sixth, fifth, fourth, third, second, first};
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void shouldReturnFiveLastInNewManager() {
+        Poster[] actual = managerNew.getAll();
+        Poster[] expected = new Poster[] {fifth, fourth, third, second, first};
+        assertArrayEquals(expected, actual);
+    }
+
+
 
 
 }
