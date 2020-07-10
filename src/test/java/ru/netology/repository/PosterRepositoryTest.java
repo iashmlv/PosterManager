@@ -38,7 +38,7 @@ class PosterRepositoryTest {
     void shouldSave() {
         repository.save(tenth);
         Poster[] actual = repository.findAll();
-        Poster[] expected = new Poster[] {tenth};
+        Poster[] expected = new Poster[] {first, second, third, fourth, fifth, sixth, seventh, eighth, ninth, tenth};
         assertArrayEquals(actual,expected);
     }
 
@@ -56,14 +56,15 @@ class PosterRepositoryTest {
         int removingId = 5;
         repository.removeById(removingId);
         Poster[] actual = repository.findAll();
-        Poster[] expected = new Poster[] {first};
+        Poster[] expected = new Poster[] {first, second, third, fourth, sixth, seventh, eighth, ninth};
         assertArrayEquals(expected,actual);
     }
 
     @Test
     void shouldRemoveAllInRepo() {
+        repository.removeAll();
         Poster[] actual = repository.findAll();
-        Poster[] expected = new Poster[] {};
+        Poster[] expected = new Poster[0];
         assertArrayEquals(expected,actual);
     }
 
