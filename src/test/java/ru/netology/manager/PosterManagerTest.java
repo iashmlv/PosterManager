@@ -19,7 +19,6 @@ class PosterManagerTest {
     PosterRepository repository;
     @InjectMocks
     PosterManager manager = new PosterManager(repository);
-    PosterManager managerNew = new PosterManager(repository, 5);
 
     private Poster first = new Poster(1, "Dirty Harry", "cop movie");
     private Poster second = new Poster(2, "Unforgiven", "western");
@@ -43,10 +42,10 @@ class PosterManagerTest {
         manager.addPoster(twelwth);
         repository.save(twelwth);
         PosterManager manager = new PosterManager(repository, 5);
-        Poster[] returned = new Poster[] {first, second, third, fourth,fifth, twelwth};
+        Poster[] returned = new Poster[]{first, second, third, fourth, fifth, twelwth};
         doReturn(returned).when(repository).findAll();
         Poster[] actual = manager.getAll();
-        Poster[] expected = new Poster[] {twelwth, fifth, fourth, third, second};
+        Poster[] expected = new Poster[]{twelwth, fifth, fourth, third, second, null};
         assertArrayEquals(expected, actual);
         Mockito.verify(repository, times(1)).findAll();
     }
@@ -72,8 +71,8 @@ class PosterManagerTest {
     }
 
     @Test
-    void shouldReturnFiveLastInNewManager() {
-        PosterManager manager = new PosterManager(repository,5);
+    void shouldReturnFiveLastInManager() {
+        PosterManager manager = new PosterManager(repository, 5);
         Poster[] returned = new Poster[]{first, second, third, fourth, fifth};
         doReturn(returned).when(repository).findAll();
         Poster[] actual = manager.getAll();
@@ -84,7 +83,7 @@ class PosterManagerTest {
 
     @Test
     void shouldReturnLastFiveWhenZero() {
-        PosterManager manager = new PosterManager(repository,0);
+        PosterManager manager = new PosterManager(repository, 0);
         Poster[] returned = new Poster[]{first, second, third, fourth, fifth};
         doReturn(returned).when(repository).findAll();
         Poster[] actual = manager.getAll();
@@ -95,7 +94,7 @@ class PosterManagerTest {
 
     @Test
     void shouldReturnLastFiveWhenLessThanZero() {
-        PosterManager manager = new PosterManager(repository,-1);
+        PosterManager manager = new PosterManager(repository, -1);
         Poster[] returned = new Poster[]{first, second, third, fourth, fifth};
         doReturn(returned).when(repository).findAll();
         Poster[] actual = manager.getAll();
@@ -106,7 +105,7 @@ class PosterManagerTest {
 
     @Test
     void shouldReturnLastFiveWhenMore() {
-        PosterManager manager = new PosterManager(repository,1000);
+        PosterManager manager = new PosterManager(repository, 1000);
         Poster[] returned = new Poster[]{first, second, third, fourth, fifth};
         doReturn(returned).when(repository).findAll();
         Poster[] actual = manager.getAll();
@@ -116,5 +115,13 @@ class PosterManagerTest {
 
     }
 
-
+    @Test
+    void shouldReturnMoreThenTen() {
+        Poster[] returned = new Poster[]{null, second, third, fourth, fifth, sixth, seventh, eighth, ninth, tenth, eleventh};
+        doReturn(returned).when(repository).findAll();
+        Poster[] actual = manager.getAll();
+        Poster[] expected = new Poster[]{eleventh, tenth, ninth, eighth, seventh, sixth, fifth, fourth, third, second, null};
+        assertArrayEquals(expected, actual);
+        verify(repository, times(1)).findAll();
+    }
 }

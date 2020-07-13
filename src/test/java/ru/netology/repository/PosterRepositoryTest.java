@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import ru.netology.domain.Poster;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PosterRepositoryTest {
 
@@ -44,11 +45,9 @@ class PosterRepositoryTest {
 
     @Test
     void shouldFindById() {
-        int neededId = 3;
-        repository.findById(neededId);
-        Poster[] actual = repository.findAll();
-        Poster[] expected = new Poster[] {third};
-        assertArrayEquals(expected,actual);
+        Poster actual = repository.findById(5);
+        Poster expected = fifth;
+        assertEquals(expected,actual);
     }
 
     @Test

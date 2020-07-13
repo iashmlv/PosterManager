@@ -19,16 +19,13 @@ public class PosterRepository {
         items = tmp;
     }
 
-    public void findById(int id) {
-        Poster[] tmp = new Poster[1];
-        int index = 0;
+    public Poster findById(int id) {
         for(Poster item : items) {
             if(item.getId() == id) {
-                tmp[index] = item;
-                index++;
+                return item;
             }
         }
-        items = tmp;
+        return null;
     }
 
     public void removeById(int id) {
