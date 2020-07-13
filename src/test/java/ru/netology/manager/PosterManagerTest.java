@@ -67,7 +67,6 @@ class PosterManagerTest {
 
     @Test
     void shouldReturnLastFiveWhenZero() {
-        manager = new PosterManager(0);
         Poster[] actual = managerNew.getAll();
         Poster[] expected = new Poster[] {fifth, fourth, third, second, first};
         assertArrayEquals(actual, expected);
@@ -75,7 +74,6 @@ class PosterManagerTest {
 
     @Test
     void shouldReturnLastFiveWhenLessThanZero() {
-        manager = new PosterManager(-1);
         Poster[] actual = managerNew.getAll();
         Poster[] expected = new Poster[] {fifth, fourth, third, second, first};
         assertArrayEquals(actual, expected);
@@ -83,9 +81,25 @@ class PosterManagerTest {
 
     @Test
     void shouldReturnLastFiveWhenMore() {
-        manager = new PosterManager(1000);
         Poster[] actual = managerNew.getAll();
         Poster[] expected = new Poster[] {fifth, fourth, third, second, first};
+        assertArrayEquals(actual, expected);
+    }
+
+    @Test
+    void shouldReturnMoreThenInDefault() {
+        manager.addPoster(tenth);
+        manager.addPoster(eleventh);
+        Poster[] actual = manager.getAll();
+        Poster[] expected = new Poster[] {eleventh, tenth, ninth, eighth, seventh, sixth, fifth, fourth, third, second, null};
+        assertArrayEquals(actual, expected);
+    }
+
+    @Test
+    void shouldReturnMoreThenInNew() {
+        managerNew.addPoster(sixth);
+        Poster[] actual = managerNew.getAll();
+        Poster[] expected = new Poster[] {sixth, fifth, fourth, third, second, null};
         assertArrayEquals(actual, expected);
     }
 

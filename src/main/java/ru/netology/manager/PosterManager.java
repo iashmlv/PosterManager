@@ -8,7 +8,8 @@ public class PosterManager {
     private int standardPosterLength = 10;
     private int newPosterLength;
 
-    public PosterManager(int i) {
+    public PosterManager(int newPosterLength) {
+        this.newPosterLength = newPosterLength;
     }
 
     public PosterManager() {
@@ -37,7 +38,7 @@ public class PosterManager {
         }
 
         Poster[] result = new Poster[items.length];
-        for (int i = 0; i < result.length; i++) {
+        for (int i = 0; i < length; i++) {
             int index = items.length - i - 1;
             result[i] = items[index];
         }
