@@ -37,8 +37,8 @@ public class PosterManager {
             }
         }
 
-        Poster[] result = new Poster[items.length];
-        for (int i = 0; i < length; i++) {
+        Poster[] result = new Poster[length];
+        for (int i = 0; i < result.length; i++) {
             int index = items.length - i - 1;
             result[i] = items[index];
         }

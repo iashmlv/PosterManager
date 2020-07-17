@@ -91,7 +91,7 @@ class PosterManagerTest {
         manager.addPoster(tenth);
         manager.addPoster(eleventh);
         Poster[] actual = manager.getAll();
-        Poster[] expected = new Poster[] {eleventh, tenth, ninth, eighth, seventh, sixth, fifth, fourth, third, second, null};
+        Poster[] expected = new Poster[] {eleventh, tenth, ninth, eighth, seventh, sixth, fifth, fourth, third, second};
         assertArrayEquals(actual, expected);
     }
 
@@ -99,7 +99,7 @@ class PosterManagerTest {
     void shouldReturnMoreThenInNew() {
         managerNew.addPoster(sixth);
         Poster[] actual = managerNew.getAll();
-        Poster[] expected = new Poster[] {sixth, fifth, fourth, third, second, null};
+        Poster[] expected = new Poster[] {sixth, fifth, fourth, third, second};
         assertArrayEquals(actual, expected);
     }
 
