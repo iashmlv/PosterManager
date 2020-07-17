@@ -45,7 +45,7 @@ class PosterManagerTest {
         Poster[] returned = new Poster[]{first, second, third, fourth, fifth, twelwth};
         doReturn(returned).when(repository).findAll();
         Poster[] actual = manager.getAll();
-        Poster[] expected = new Poster[]{twelwth, fifth, fourth, third, second, null};
+        Poster[] expected = new Poster[]{twelwth, fifth, fourth, third, second};
         assertArrayEquals(expected, actual);
         Mockito.verify(repository, times(1)).findAll();
     }
@@ -117,10 +117,10 @@ class PosterManagerTest {
 
     @Test
     void shouldReturnMoreThenTen() {
-        Poster[] returned = new Poster[]{null, second, third, fourth, fifth, sixth, seventh, eighth, ninth, tenth, eleventh};
+        Poster[] returned = new Poster[]{second, third, fourth, fifth, sixth, seventh, eighth, ninth, tenth, eleventh};
         doReturn(returned).when(repository).findAll();
         Poster[] actual = manager.getAll();
-        Poster[] expected = new Poster[]{eleventh, tenth, ninth, eighth, seventh, sixth, fifth, fourth, third, second, null};
+        Poster[] expected = new Poster[]{eleventh, tenth, ninth, eighth, seventh, sixth, fifth, fourth, third, second};
         assertArrayEquals(expected, actual);
         verify(repository, times(1)).findAll();
     }
